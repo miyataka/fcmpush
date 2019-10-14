@@ -58,9 +58,6 @@ payload = { # ref. https://firebase.google.com/docs/reference/fcm/rest/v1/projec
 
 response = client.push(payload)
 
-headers = response.headers
-headers['Retry-After'] # => returns 'Retry-After'
-
 json = response.json
 json[:name] # => "projects/[your_project_id]/messages/0:1571037134532751%31bd1c9631bd1c96"
 ```
