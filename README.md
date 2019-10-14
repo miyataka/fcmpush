@@ -1,4 +1,4 @@
-# Fcmpush
+# Fcmpush [![Build Status](https://travis-ci.org/miyataka/fcmpush.svg?branch=master)](https://travis-ci.org/miyataka/fcmpush)
 
 Fcmpush is an Firebase Cloud Messaging(FCM) Client. It implements [FCM HTTP v1 API](https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages).
 This gem supports HTTP v1 API only, **NOT supported [legacy HTTP protocol](https://firebase.google.com/docs/cloud-messaging/http-server-ref)**, because both authentication method is different.
