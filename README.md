@@ -52,7 +52,7 @@ payload = { # ref. https://firebase.google.com/docs/reference/fcm/rest/v1/projec
     notification: {
       title: "this is title",
       body: "this is message body"
-   }
+    }
   }
 }
 
