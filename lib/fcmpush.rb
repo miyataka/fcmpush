@@ -1,6 +1,9 @@
-require 'net/http/persistent'
+require 'fcmpush/configuration'
 require 'fcmpush/version'
+
+require 'net/http/persistent'
 require 'json'
+require 'googleauth'
 
 module Fcmpush
   class Error < StandardError; end
@@ -9,28 +12,59 @@ module Fcmpush
   V1_ENDPOINT_SUFFIX = '/messages:send'.freeze
 
   class << self
+    attr_reader :configuration
+
     def build(project_id, domain: nil)
-      ::Fcmpush::Client.new(domain || DOMAIN, project_id)
+      ::Fcmpush::Client.new(domain || DOMAIN, project_id, configuration)
     end
     alias new build
   end
 
-  class Client
-    attr_reader :domain, :path, :connection
+  def self.configuration
+    @configuration ||= Configuration.new
+  end
 
-    def initialize(domain, project_id, **options)
+  def self.reset
+    @configuration = Configuration.new
+  end
+
+  def self.configure
+    yield(configuration)
+  end
+
+  class Client
+    attr_reader :domain, :path, :connection, :access_token, :configuration
+
+    def initialize(domain, project_id, configuration, **options)
       @domain = domain
       @project_id = project_id
       @path = V1_ENDPOINT_PREFIX + project_id.to_s + V1_ENDPOINT_SUFFIX
       @options = {}.merge(options)
+      @configuration = configuration
+      @access_token = authorize
       @connection = Net::HTTP::Persistent.new
+    end
+
+    def authorize
+      @auth ||= if configuration.json_key_io
+                  Google::Auth::ServiceAccountCredentials.make_creds(
+                    json_key_io: File.open(configuration.json_key_io),
+                    scope: configuration.scope
+                  )
+                else
+                  # from ENV
+                  Google::Auth::ServiceAccountCredentials.make_creds(
+                    scope: configuration.scope
+                  )
+                end
+      @auth.fetch_access_token!['access_token']
     end
 
     def push(body, query: {}, headers: {})
       uri = URI.join(domain, path)
       uri.query = URI.encode_www_form(query) unless query.empty?
 
-      # TODO: set header for authorization
+      headers = authorized_header(headers)
       post = Net::HTTP::Post.new(uri, headers)
       post.body = body.is_a?(String) ? body : body.to_json
 
@@ -40,7 +74,13 @@ module Fcmpush
       raise NetworkError, "A network error occurred: #{e.class} (#{e.message})"
     end
 
-    def exception_handler(response, _options)
+    def authorized_header(headers)
+      headers.merge('Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
+                    'Authorization' => "Bearer #{access_token}")
+    end
+
+    def exception_handler(response)
       error = STATUS_TO_EXCEPTION_MAPPING[response.code]
       raise error.new("Receieved an error response #{response.code} #{error.to_s.split('::').last}: #{response.body}", response) if error
 
