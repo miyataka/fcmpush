@@ -12,8 +12,6 @@ module Fcmpush
   V1_ENDPOINT_SUFFIX = '/messages:send'.freeze
 
   class << self
-    attr_reader :configuration
-
     def build(project_id, domain: nil)
       ::Fcmpush::Client.new(domain || DOMAIN, project_id, configuration)
     end
@@ -28,8 +26,8 @@ module Fcmpush
     @configuration = Configuration.new
   end
 
-  def self.configure
-    yield(configuration)
+  def self.configure(&block)
+    yield(configuration(&block))
   end
 
   class Client
