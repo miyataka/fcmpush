@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    fcmpush (0.1.1)
+    fcmpush (0.1.2)
       googleauth (>= 0.10.0)
       net-http-persistent (>= 3.1.0)
 
