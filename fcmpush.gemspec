@@ -5,7 +5,7 @@ require 'fcmpush/version'
 Gem::Specification.new do |spec|
   spec.name          = 'fcmpush'
   spec.version       = Fcmpush::VERSION
-  spec.authors       = ['Takayuki Miyahara']
+  spec.authors       = ['miyataka']
   spec.email         = ['voyager.3taka28@gmail.com']
 
   spec.summary       = 'Firebase Cloud Messaging API wrapper for ruby, supports HTTP v1 only.'
