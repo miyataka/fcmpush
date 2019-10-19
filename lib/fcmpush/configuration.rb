@@ -15,7 +15,7 @@ module Fcmpush
       # ENV['GOOGLE_PRIVATE_KEY'] = '-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n'
 
       # regacy auth
-      @server_key = nil || ENV['FCM_SERVER_KEY']
+      @server_key = ENV['FCM_SERVER_KEY']
     end
   end
 end
