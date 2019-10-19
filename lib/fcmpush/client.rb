@@ -8,7 +8,7 @@ module Fcmpush
   TOPIC_ENDPOINT_PREFIX = '/iid/v1'.freeze
 
   class Client
-    attr_reader :domain, :path, :connection, :access_token, :configuration, :server_key
+    attr_reader :domain, :path, :connection, :configuration, :server_key, :access_token, :access_token_expiry
 
     def initialize(domain, project_id, configuration, **options)
       @domain = domain
@@ -16,7 +16,9 @@ module Fcmpush
       @path = V1_ENDPOINT_PREFIX + project_id.to_s + V1_ENDPOINT_SUFFIX
       @options = {}.merge(options)
       @configuration = configuration
-      @access_token = v1_authorize
+      access_token_response = v1_authorize
+      @access_token = access_token_response['access_token']
+      @access_token_expiry = Time.now.utc + access_token_response['expires_in']
       @server_key = configuration.server_key
       @connection = Net::HTTP::Persistent.new
     end
@@ -31,7 +33,7 @@ module Fcmpush
                   # from ENV
                   Google::Auth::ServiceAccountCredentials.make_creds(scope: configuration.scope)
                 end
-      @auth.fetch_access_token!['access_token']
+      @auth.fetch_access_token
     end
 
     def push(body, query: {}, headers: {})
@@ -64,6 +66,7 @@ module Fcmpush
         uri = URI.join(domain, path)
         uri.query = URI.encode_www_form(query) unless query.empty?
 
+        access_token_refresh
         headers = v1_authorized_header(headers)
         post = Net::HTTP::Post.new(uri, headers)
         post.body = body.is_a?(String) ? body : body.to_json
@@ -82,6 +85,14 @@ module Fcmpush
         post.body = make_subscription_body(topic, *instance_ids)
 
         [uri, post]
+      end
+
+      def access_token_refresh
+        return if access_token_expiry > Time.now.utc + 300
+
+        access_token_response = v1_authorize
+        @access_token = access_token_response['access_token']
+        @access_token_expiry = Time.now.utc + access_token_response['expires_in']
       end
 
       def v1_authorized_header(headers)
