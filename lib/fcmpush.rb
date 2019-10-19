@@ -90,6 +90,20 @@ module Fcmpush
       raise NetworkError, "A network error occurred: #{e.class} (#{e.message})"
     end
 
+    def unsubscribe(topic, *instance_ids, query: {}, headers: {})
+      uri = URI.join(TOPIC_DOMAIN, TOPIC_ENDPOINT_PREFIX + ':batchRemove')
+      uri.query = URI.encode_www_form(query) unless query.empty?
+
+      headers = legacy_authorized_header(headers)
+      post = Net::HTTP::Post.new(uri, headers)
+      post.body = make_subscription_body(topic, *instance_ids)
+
+      response = exception_handler(connection.request(uri, post))
+      JsonResponse.new(response)
+    rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
+      raise NetworkError, "A network error occurred: #{e.class} (#{e.message})"
+    end
+
     def v1_authorized_header(headers)
       headers.merge('Content-Type' => 'application/json',
                     'Accept' => 'application/json',
