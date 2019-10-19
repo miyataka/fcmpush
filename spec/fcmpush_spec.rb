@@ -1,5 +1,3 @@
-require 'pry-byebug'
-
 RSpec.describe Fcmpush do
   let(:device_token) { ENV.fetch('TEST_DEVICE_TOKEN') }
   let(:project_id) { ENV.fetch('TEST_PROJECT_ID') }
