@@ -40,11 +40,11 @@ module Fcmpush
       @path = V1_ENDPOINT_PREFIX + project_id.to_s + V1_ENDPOINT_SUFFIX
       @options = {}.merge(options)
       @configuration = configuration
-      @access_token = authorize
+      @access_token = v1_authorize
       @connection = Net::HTTP::Persistent.new
     end
 
-    def authorize
+    def v1_authorize
       @auth ||= if configuration.json_key_io
                   Google::Auth::ServiceAccountCredentials.make_creds(
                     json_key_io: File.open(configuration.json_key_io),
@@ -63,7 +63,7 @@ module Fcmpush
       uri = URI.join(domain, path)
       uri.query = URI.encode_www_form(query) unless query.empty?
 
-      headers = authorized_header(headers)
+      headers = v1_authorized_header(headers)
       post = Net::HTTP::Post.new(uri, headers)
       post.body = body.is_a?(String) ? body : body.to_json
 
@@ -73,7 +73,7 @@ module Fcmpush
       raise NetworkError, "A network error occurred: #{e.class} (#{e.message})"
     end
 
-    def authorized_header(headers)
+    def v1_authorized_header(headers)
       headers.merge('Content-Type' => 'application/json',
                     'Accept' => 'application/json',
                     'Authorization' => "Bearer #{access_token}")
