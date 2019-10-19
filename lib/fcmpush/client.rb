@@ -29,80 +29,86 @@ module Fcmpush
                   )
                 else
                   # from ENV
-                  Google::Auth::ServiceAccountCredentials.make_creds(
-                    scope: configuration.scope
-                  )
+                  Google::Auth::ServiceAccountCredentials.make_creds(scope: configuration.scope)
                 end
       @auth.fetch_access_token!['access_token']
     end
 
     def push(body, query: {}, headers: {})
-      uri = URI.join(domain, path)
-      uri.query = URI.encode_www_form(query) unless query.empty?
-
-      headers = v1_authorized_header(headers)
-      post = Net::HTTP::Post.new(uri, headers)
-      post.body = body.is_a?(String) ? body : body.to_json
-
-      response = exception_handler(connection.request(uri, post))
+      uri, request = make_push_request(body, query, headers)
+      response = exception_handler(connection.request(uri, request))
       JsonResponse.new(response)
     rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
       raise NetworkError, "A network error occurred: #{e.class} (#{e.message})"
     end
 
     def subscribe(topic, *instance_ids, query: {}, headers: {})
-      uri = URI.join(TOPIC_DOMAIN, TOPIC_ENDPOINT_PREFIX + ':batchAdd')
-      uri.query = URI.encode_www_form(query) unless query.empty?
-
-      headers = legacy_authorized_header(headers)
-      post = Net::HTTP::Post.new(uri, headers)
-      post.body = make_subscription_body(topic, *instance_ids)
-
-      response = exception_handler(connection.request(uri, post))
+      uri, request = make_subscription_request(topic, *instance_ids, :subscribe, query, headers)
+      response = exception_handler(connection.request(uri, request))
       JsonResponse.new(response)
     rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
       raise NetworkError, "A network error occurred: #{e.class} (#{e.message})"
     end
 
     def unsubscribe(topic, *instance_ids, query: {}, headers: {})
-      uri = URI.join(TOPIC_DOMAIN, TOPIC_ENDPOINT_PREFIX + ':batchRemove')
-      uri.query = URI.encode_www_form(query) unless query.empty?
-
-      headers = legacy_authorized_header(headers)
-      post = Net::HTTP::Post.new(uri, headers)
-      post.body = make_subscription_body(topic, *instance_ids)
-
-      response = exception_handler(connection.request(uri, post))
+      uri, request = make_subscription_request(topic, *instance_ids, :unsubscribe, query, headers)
+      response = exception_handler(connection.request(uri, request))
       JsonResponse.new(response)
     rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
       raise NetworkError, "A network error occurred: #{e.class} (#{e.message})"
     end
 
-    def v1_authorized_header(headers)
-      headers.merge('Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                    'Authorization' => "Bearer #{access_token}")
-    end
+    private
 
-    def legacy_authorized_header(headers)
-      headers.merge('Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                    'Authorization' => "Bearer key=#{server_key}")
-    end
+      def make_push_request(body, query, headers)
+        uri = URI.join(domain, path)
+        uri.query = URI.encode_www_form(query) unless query.empty?
 
-    def exception_handler(response)
-      error = STATUS_TO_EXCEPTION_MAPPING[response.code]
-      raise error.new("Receieved an error response #{response.code} #{error.to_s.split('::').last}: #{response.body}", response) if error
+        headers = v1_authorized_header(headers)
+        post = Net::HTTP::Post.new(uri, headers)
+        post.body = body.is_a?(String) ? body : body.to_json
 
-      response
-    end
+        [uri, post]
+      end
 
-    def make_subscription_body(topic, *instance_ids)
-      topic = topic.match?(%r{^/topics/}) ? topic : '/topics/' + topic
-      {
-        to: topic,
-        registration_tokens: instance_ids
-      }.to_json
-    end
+      def make_subscription_request(topic, instance_ids, type, query, headers)
+        suffix = type == :subscribe ? ':batchAdd' : ':batchRemove'
+
+        uri = URI.join(TOPIC_DOMAIN, TOPIC_ENDPOINT_PREFIX + suffix)
+        uri.query = URI.encode_www_form(query) unless query.empty?
+
+        headers = legacy_authorized_header(headers)
+        post = Net::HTTP::Post.new(uri, headers)
+        post.body = make_subscription_body(topic, *instance_ids)
+
+        [uri, post]
+      end
+
+      def v1_authorized_header(headers)
+        headers.merge('Content-Type' => 'application/json',
+                      'Accept' => 'application/json',
+                      'Authorization' => "Bearer #{access_token}")
+      end
+
+      def legacy_authorized_header(headers)
+        headers.merge('Content-Type' => 'application/json',
+                      'Accept' => 'application/json',
+                      'Authorization' => "Bearer key=#{server_key}")
+      end
+
+      def exception_handler(response)
+        error = STATUS_TO_EXCEPTION_MAPPING[response.code]
+        raise error.new("Receieved an error response #{response.code} #{error.to_s.split('::').last}: #{response.body}", response) if error
+
+        response
+      end
+
+      def make_subscription_body(topic, *instance_ids)
+        topic = topic.match?(%r{^/topics/}) ? topic : '/topics/' + topic
+        {
+          to: topic,
+          registration_tokens: instance_ids
+        }.to_json
+      end
   end
 end
