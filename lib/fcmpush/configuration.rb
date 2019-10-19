@@ -1,6 +1,6 @@
 module Fcmpush
   class Configuration
-    attr_accessor :scope, :json_key_io
+    attr_accessor :scope, :json_key_io, :server_key
 
     def initialize
       @scope = ['https://www.googleapis.com/auth/firebase.messaging']
@@ -13,6 +13,9 @@ module Fcmpush
       # ENV['GOOGLE_CLIENT_ID'] = '000000000000000000000'
       # ENV['GOOGLE_CLIENT_EMAIL'] = 'xxxx@xxxx.iam.gserviceaccount.com'
       # ENV['GOOGLE_PRIVATE_KEY'] = '-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n'
+
+      # regacy auth
+      @server_key = ENV['FCM_SERVER_KEY']
     end
   end
 end
