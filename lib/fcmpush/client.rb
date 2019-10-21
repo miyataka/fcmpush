@@ -115,7 +115,7 @@ module Fcmpush
       end
 
       def make_subscription_body(topic, *instance_ids)
-        topic = topic.match?(%r{^/topics/}) ? topic : '/topics/' + topic
+        topic = topic.match(%r{^/topics/}) ? topic : '/topics/' + topic
         {
           to: topic,
           registration_tokens: instance_ids
