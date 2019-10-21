@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['miyataka']
   spec.email         = ['voyager.3taka28@gmail.com']
 
-  spec.summary       = 'Firebase Cloud Messaging API wrapper for ruby, supports HTTP v1 only.'
+  spec.summary       = 'Firebase Cloud Messaging API wrapper for ruby, supports HTTP v1.'
   spec.homepage      = 'https://github.com/miyataka/fcmpush'
   spec.license       = 'MIT'
 
