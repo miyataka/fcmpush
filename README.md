@@ -87,8 +87,34 @@ json = response.json
 json[:results] # => [{}, {"error":"NOT_FOUND"}, ...]  ref. https://developers.google.com/instance-id/reference/server#example_result_3
 ```
 
-## Future Work
-- [DEV] compare other gems
+## Performance
+- fcmpush's performance is good. (at least not so bad.)
+- [andpush](https://github.com/yuki24/andpush) is the fastest, but it uses legacy HTTP API.
+- fcmpush is fastest in gems using V1 HTTP API(fcmpush, [google-api-fcm](https://github.com/oniksfly/google-api-fcm), [firebase_cloud_messenger](https://github.com/vincedevendra/firebase_cloud_messenger)).
+- benchmark detail is [here](https://gist.github.com/miyataka/8787021724ee7dc5cecea88913f3af8c).
+```
+Warming up --------------------------------------
+             andpush     1.000  i/100ms
+                 fcm     1.000  i/100ms
+             fcmpush     1.000  i/100ms
+      google-api-fcm     1.000  i/100ms
+firebase_cloud_messenger
+                         1.000  i/100ms
+Calculating -------------------------------------
+             andpush     13.161  (±15.2%) i/s -     63.000  in   5.010981s
+                 fcm      6.177  (±16.2%) i/s -     30.000  in   5.066638s
+             fcmpush      7.237  (±13.8%) i/s -     36.000  in   5.098668s
+      google-api-fcm      6.889  (±14.5%) i/s -     33.000  in   5.031508s
+firebase_cloud_messenger
+                          2.766  (± 0.0%) i/s -     14.000  in   5.079574s
+
+Comparison:
+             andpush:       13.2 i/s
+             fcmpush:        7.2 i/s - 1.82x  slower
+      google-api-fcm:        6.9 i/s - 1.91x  slower
+                 fcm:        6.2 i/s - 2.13x  slower
+firebase_cloud_messenger:        2.8 i/s - 4.76x  slower
+```
 
 ## Contributing
 
