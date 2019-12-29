@@ -11,3 +11,5 @@
 .rspec_status
 
 /vendor/bundle
+.ruby-version
+Gemfile.lock

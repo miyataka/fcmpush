@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['miyataka']
   spec.email         = ['voyager.3taka28@gmail.com']
 
-  spec.summary       = 'Firebase Cloud Messaging API wrapper for ruby, supports HTTP v1.'
+  spec.summary       = 'Firebase Cloud Messaging API wrapper for ruby, supports HTTP v1. And including access_token Auto Refresh feature!'
   spec.homepage      = 'https://github.com/miyataka/fcmpush'
   spec.license       = 'MIT'
 
@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   spec.metadata['source_code_uri'] = 'https://github.com/miyataka/fcmpush'
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
-    `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
+    `git ls-files -z`.split("\x0").select { |f| f.match(%r{^(lib/|fcmpush.gemspec)}) }
   end
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }

@@ -1,3 +1,4 @@
+require 'delegate' if RUBY_VERSION >= '2.7'
 require 'json'
 
 module Fcmpush
