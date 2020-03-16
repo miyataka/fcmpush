@@ -26,7 +26,7 @@ module Fcmpush
     def v1_authorize
       @auth ||= if configuration.json_key_io
                   Google::Auth::ServiceAccountCredentials.make_creds(
-                    json_key_io: File.open(configuration.json_key_io),
+                    json_key_io: configuration.json_key_io,
                     scope: configuration.scope
                   )
                 else
