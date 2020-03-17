@@ -25,7 +25,7 @@ module Fcmpush
 
     def v1_authorize
       @auth ||= if configuration.json_key_io
-                  io = if configuration.json_key_io.is_a?(IO) || configuration.json_key_io.is_a?(StringIO)
+                  io = if configuration.json_key_io.respond_to?(:read)
                          configuration.json_key_io
                        else
                          File.open(configuration.json_key_io)
