@@ -28,7 +28,11 @@ on Rails, config/initializers/fcmpush.rb
 Fcmpush.configure do |config|
   ## for message push
   # firebase web console => project settings => service account => firebase admin sdk => generate new private key
+
+  # pass string of path to credential file to config.json_key_io
   config.json_key_io = "#{Rails.root}/path/to/service_account_credentials.json"
+  # Or content of json key file wrapped with StringIO
+  # config.json_key_io = StringIO.new('{ ... }')
 
   # Or set environment variables
   # ENV['GOOGLE_ACCOUNT_TYPE'] = 'service_account'
