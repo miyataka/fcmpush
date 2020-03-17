@@ -13,6 +13,7 @@ before_install:
   - gem update --system
   - gem --version
   - gem install bundler -v 2.0.2
+  - openssl aes-256-cbc -K $encrypted_5212497c15fb_key -iv $encrypted_5212497c15fb_iv -in test_credentials.json.enc -out .travis/test_credentials.json -d
 notifications:
   slack:
     secure: Uckm/iIr1N6dvkzJeGes8yARAQSHLFGWjAw7CsNGiU5KERf0a/WWo+8OoWAqBtgcnqVDdBcNm0aUax+5JbfyLg0q8YW1wtYuAE2Gqocvs5TPt8XwyEQv6sYyN1mqrcJWl4FO22DCxF+Oetju1wEjpjSVYs6uzDrj7U6HzuJON/yd+lUjJWOD1OOaRJUYjI9uU7x7RRscECGU8p0ffjeiGOkM2EuJ/osA/CeDlDd93hlUpseZqxceQGdsSZHscbqV0eWVDexoPtUOIK08VFgCk3FIA4vfO8XDaBibSiqiTYUPGPQILjMhGKmB/dmz2LyxdWGdCBOjH1CnD1LXNq9yPhquDXm/2u4cVWIV7bgOHDZ6ylRz0u+AUWVMI/VJOd27YOkZCGgqbb12Y7sBh0m9KalU/fqfIafOvt24j5o2abjJCKHoTUgdESpbLYqnZvK00uRjjOp0H0yQnXicaFE4lByAGbxmpxWZ3fs1OZkppYOl8dF9AQWB6Uty4KraTpUB6fGHoE7/IPeUNsENXWPUqITsRDPFjCTWED/YvKfUi+xTA+K1vJZympsPevT6xcL82TXGDtdHA4U52MLiAuizXP/+R3XhO2PzBSyLbEMus2iJYwXsIac157uhcDrECQfIkm9DMtSHKP83ABf/Flj73NKayWYP0OsigBdUYVgs5aQ=

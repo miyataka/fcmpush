@@ -3,7 +3,6 @@ RSpec.describe Fcmpush do
   let(:project_id) { ENV.fetch('TEST_PROJECT_ID') }
   let(:server_key) { ENV.fetch('FCM_SERVER_KEY') }
   let(:json_key_path) { ENV.fetch('TEST_JSON_KEY_PATH') }
-  let(:json_key_string) { JSON.generate({client_email: ENV['GOOGLE_CLIENT_EMAIL'], private_key: ENV['GOOGLE_PRIVATE_KEY']}) }
 
   it 'has a version number' do
     expect(Fcmpush::VERSION).not_to be nil
@@ -108,7 +107,7 @@ RSpec.describe Fcmpush do
 
       it 'smoke test' do
         Fcmpush.configure do |config|
-          config.json_key_io = StringIO.new(json_key_string)
+          config.json_key_io = StringIO.new(File.read(json_key_path))
         end
         client = Fcmpush.new(project_id)
         message_json = {
