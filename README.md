@@ -84,15 +84,15 @@ device_tokens = ["...A", "...B", "...C"] # The device token of the device you'd 
 client  = Fcmpush.new(project_id)
 
 payloads = device_tokens.map do |token|
-{ # ref. https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages
-  message: {
-    token: token,
-    notification: {
-      title: "this is title",
-      body: "this is message body"
+  { # ref. https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages
+    message: {
+      token: token,
+      notification: {
+        title: "this is title",
+        body: "this is message body"
+      }
     }
   }
-}
 end
 
 response = client.batch_push(payloads)
