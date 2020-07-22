@@ -1,13 +1,17 @@
 require 'fcmpush/exceptions'
+require 'fcmpush/batch'
 require 'fcmpush/json_response'
+require 'fcmpush/batch_response'
 
 module Fcmpush
   V1_ENDPOINT_PREFIX = '/v1/projects/'.freeze
   V1_ENDPOINT_SUFFIX = '/messages:send'.freeze
   TOPIC_DOMAIN = 'https://iid.googleapis.com'.freeze
   TOPIC_ENDPOINT_PREFIX = '/iid/v1'.freeze
+  BATCH_ENDPOINT = '/batch'.freeze
 
   class Client
+    include Batch
     attr_reader :domain, :path, :connection, :configuration, :server_key, :access_token, :access_token_expiry
 
     def initialize(domain, project_id, configuration, **options)
@@ -61,6 +65,14 @@ module Fcmpush
       uri, request = make_subscription_request(topic, *instance_ids, :unsubscribe, query, headers)
       response = exception_handler(connection.request(uri, request))
       JsonResponse.new(response)
+    rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
+      raise NetworkError, "A network error occurred: #{e.class} (#{e.message})"
+    end
+
+    def batch_push(messages, query: {}, headers: {})
+      uri, request = make_batch_request(messages, query, headers)
+      response = exception_handler(connection.request(uri, request))
+      BatchResponse.new(response)
     rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
       raise NetworkError, "A network error occurred: #{e.class} (#{e.message})"
     end
@@ -125,6 +137,19 @@ module Fcmpush
           to: topic,
           registration_tokens: instance_ids
         }.to_json
+      end
+
+      def make_batch_request(messages, query, headers)
+        uri = URI.join(domain, BATCH_ENDPOINT)
+        uri.query = URI.encode_www_form(query) unless query.empty?
+
+        access_token_refresh
+        headers = v1_authorized_header(headers)
+        post = Net::HTTP::Post.new(uri, headers)
+        post['Content-Type'] = "multipart/mixed; boundary=#{::Fcmpush::Batch::PART_BOUNDRY}"
+        post.body = make_batch_payload(messages, headers)
+
+        [uri, post]
       end
   end
 end
