@@ -7,7 +7,7 @@ module Fcmpush
     HAS_SYMBOL_GC = RUBY_VERSION > '2.2.0'
 
     def json
-      parsable? ? parse_body(body) : nil
+      parsable? ? @parsed ||= parse_body(body) : nil
     end
 
     def inspect
@@ -17,6 +17,14 @@ module Fcmpush
 
     def parsable?
       !body.nil? && !body.empty?
+    end
+
+    def success_count
+      @success_count ||= json.length - failure_count
+    end
+
+    def failure_count
+      @failure_count ||= json.select { |i| i[:error] }.size
     end
 
     private

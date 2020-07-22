@@ -89,6 +89,8 @@ RSpec.describe Fcmpush do
         json = response.json
 
         expect(response.code).to eq('200')
+        expect(response.success_count).to eq(5)
+        expect(response.failure_count).to eq(0)
         expect(json.length).to eq(5)
         result = json.all? { |i| i[:name]&.start_with?("projects/#{project_id}/messages/") }
         expect(result).to be true
