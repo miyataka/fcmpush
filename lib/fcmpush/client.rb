@@ -1,6 +1,7 @@
 require 'fcmpush/exceptions'
-require 'fcmpush/json_response'
 require 'fcmpush/batch'
+require 'fcmpush/json_response'
+require 'fcmpush/batch_response'
 
 module Fcmpush
   V1_ENDPOINT_PREFIX = '/v1/projects/'.freeze
@@ -71,7 +72,7 @@ module Fcmpush
     def batch_push(messages, query: {}, headers: {})
       uri, request = make_batch_request(messages, query, headers)
       response = exception_handler(connection.request(uri, request))
-      JsonResponse.new(response)
+      BatchResponse.new(response)
     rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
       raise NetworkError, "A network error occurred: #{e.class} (#{e.message})"
     end

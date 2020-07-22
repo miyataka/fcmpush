@@ -76,22 +76,24 @@ RSpec.describe Fcmpush do
       end
     end
 
-    # context '#batch_push' do
-    #   it 'batch test' do
-    #     client = Fcmpush.new(project_id)
-    #     message_jsons = 5.times.map do |i|
-    #       { message: { token: device_token,
-    #                    notification: { title: "test title#{i}",
-    #                                    body: "test body#{i}" } } }
-    #     end
-    #     response = client.batch_push(message_jsons)
+    context '#batch_push' do
+      it 'batch test' do
+        client = Fcmpush.new(project_id)
+        message_jsons = 5.times.map do |i|
+          { message: { token: device_token,
+                       notification: { title: "test title#{i}",
+                                       body: "test body#{i}" } } }
+        end
+        response = client.batch_push(message_jsons)
 
-    #     json = response.json
+        json = response.json
 
-    #     expect(response.code).to eq('200')
-    #     expect(json[:name]).to start_with("projects/#{project_id}/messages/")
-    #   end
-    # end
+        expect(response.code).to eq('200')
+        expect(json.length).to eq(5)
+        result = json.all? { |i| i[:name]&.start_with?("projects/#{project_id}/messages/") }
+        expect(result).to be true
+      end
+    end
   end
 
   context 'configuration compatibility check' do
