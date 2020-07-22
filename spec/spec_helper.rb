@@ -1,7 +1,7 @@
 require 'bundler/setup'
 require 'fcmpush'
 require 'active_support/test_case'
-require 'pry-byebug'
+# require 'pry-byebug'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
