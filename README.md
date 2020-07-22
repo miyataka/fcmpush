@@ -1,6 +1,6 @@
 # Fcmpush [![Build Status](https://travis-ci.org/miyataka/fcmpush.svg?branch=master)](https://travis-ci.org/miyataka/fcmpush) [![Gem Version](https://badge.fury.io/rb/fcmpush.svg)](https://badge.fury.io/rb/fcmpush)
 
-Fcmpush is an Firebase Cloud Messaging(FCM) Client. It implements [FCM HTTP v1 API](https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages), including **Auto Refresh** access_token feature!!
+Fcmpush is an Firebase Cloud Messaging(FCM) Client. It implements [FCM HTTP v1 API](https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages), including **Auto Refresh** access_token feature, and BatchRequest!!
 This gem supports HTTP v1 API only, **NOT supported [legacy HTTP protocol](https://firebase.google.com/docs/cloud-messaging/http-server-ref)**.
 
 fcmpush is highly inspired by [andpush gem](https://github.com/yuki24/andpush).
@@ -72,6 +72,33 @@ response = client.push(payload)
 
 json = response.json
 json[:name] # => "projects/[your_project_id]/messages/0:1571037134532751%31bd1c9631bd1c96"
+```
+
+### push messages in batch
+```ruby
+require 'fcmpush'
+
+project_id   = "..." # Your project_id
+device_tokens = ["...A", "...B", "...C"] # The device token of the device you'd like to push a message to
+
+client  = Fcmpush.new(project_id)
+
+payloads = device_tokens.map do |token|
+{ # ref. https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages
+  message: {
+    token: token,
+    notification: {
+      title: "this is title",
+      body: "this is message body"
+    }
+  }
+}
+end
+
+response = client.batch_push(payloads)
+
+response_array = response.json
+response_array.first[:name] # => "projects/[your_project_id]/messages/0:1571037134532751%31bd1c9631bd1c96"
 ```
 
 ### topic subscribe/unsubscribe
