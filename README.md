@@ -1,6 +1,6 @@
 # Fcmpush [![Build Status](https://travis-ci.org/miyataka/fcmpush.svg?branch=master)](https://travis-ci.org/miyataka/fcmpush) [![Gem Version](https://badge.fury.io/rb/fcmpush.svg)](https://badge.fury.io/rb/fcmpush)
 
-Fcmpush is an Firebase Cloud Messaging(FCM) Client. It implements [FCM HTTP v1 API](https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages), including **Auto Refresh** access_token feature, and BatchRequest!!
+Fcmpush is an Firebase Cloud Messaging(FCM) Client. It implements [FCM HTTP v1 API](https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages), including **Auto Refresh** access_token feature, and batch request!!
 This gem supports HTTP v1 API only, **NOT supported [legacy HTTP protocol](https://firebase.google.com/docs/cloud-messaging/http-server-ref)**.
 
 fcmpush is highly inspired by [andpush gem](https://github.com/yuki24/andpush).
