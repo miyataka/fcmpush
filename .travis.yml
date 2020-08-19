@@ -8,6 +8,8 @@ rvm:
   - 2.5
   - 2.6
   - 2.7
+env:
+  ON_TRAVIS: true
 
 before_install:
   - gem update --system

@@ -19,7 +19,7 @@ module Fcmpush
       @project_id = project_id
       @path = V1_ENDPOINT_PREFIX + project_id.to_s + V1_ENDPOINT_SUFFIX
       @options = {}.merge(options)
-      @configuration = configuration
+      @configuration = configuration.dup
       access_token_response = v1_authorize
       @access_token = access_token_response['access_token']
       @access_token_expiry = Time.now.utc + access_token_response['expires_in']
