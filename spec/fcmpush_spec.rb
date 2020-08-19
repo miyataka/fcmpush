@@ -152,16 +152,18 @@ RSpec.describe Fcmpush do
 
     context 'configuration is isolate between clients' do
       it 'smoke test' do
-        Fcmpush.configure do |config|
-          config.json_key_io = json_key_path
-        end
-        client_a = Fcmpush.new(project_id)
+        unless ENV['ON_TRAVIS']
+          Fcmpush.configure do |config|
+            config.json_key_io = json_key_path
+          end
+          client_a = Fcmpush.new(project_id)
 
-        Fcmpush.configure do |config|
-          config.json_key_io = another_json_key_path
+          Fcmpush.configure do |config|
+            config.json_key_io = another_json_key_path
+          end
+          client_b = Fcmpush.new(project_id)
+          expect(client_a.configuration.object_id).not_to eq(client_b.configuration.object_id)
         end
-        client_b = Fcmpush.new(project_id)
-        expect(client_a.configuration.object_id).not_to eq(client_b.configuration.object_id)
       end
     end
   end
