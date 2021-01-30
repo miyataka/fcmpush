@@ -34,7 +34,7 @@ jobs:
 
       - name: Rubocop
         run: |
-          bundle exec rspec
+          bundle exec rspec spec/fcmpush_spec.rb
 
       - name: slack notification
         uses: 8398a7/action-slack@v2
