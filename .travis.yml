@@ -8,13 +8,14 @@ rvm:
   - 2.5
   - 2.6
   - 2.7
+  - 3.0
 env:
   ON_TRAVIS: true
 
 before_install:
   - gem update --system
   - gem --version
-  - gem install bundler -v 2.0.2
+  - gem install bundler -v 2
   - openssl aes-256-cbc -K $encrypted_5212497c15fb_key -iv $encrypted_5212497c15fb_iv -in test_credentials.json.enc -out .travis/test_credentials.json -d
 notifications:
   slack:
