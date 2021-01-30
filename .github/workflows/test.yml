@@ -5,9 +5,7 @@ on: push
 jobs:
   rspec:
     runs-on: ubuntu-latest
-    environment: CI
-    env:
-      TEST_PROJECT_ID: ${{ env.TEST_PROJECT_ID }}
+    environment: ci
     strategy:
       matrix:
         ruby: [ 2.4 ]
