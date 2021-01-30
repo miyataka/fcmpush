@@ -37,6 +37,8 @@ jobs:
       - name: Rubocop
         run: |
           bundle exec rspec spec/fcmpush_spec.rb
+        env:
+          TEST_PROJECT_ID: ${{ secrets.TEST_PROJECT_ID }}
 
       - name: slack notification
         uses: 8398a7/action-slack@v2
