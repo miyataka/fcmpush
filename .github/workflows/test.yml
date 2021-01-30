@@ -18,7 +18,7 @@ jobs:
 
       - name: Configure Bundler
         run: |
-          gem install -N bundler -v $(cat Gemfile.lock | tail -1 | tr -d " ")
+          gem install -N bundler -v 2
 
       - uses: actions/cache@v1
         with:
