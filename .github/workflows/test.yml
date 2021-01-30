@@ -5,7 +5,6 @@ on: push
 jobs:
   rspec:
     runs-on: ubuntu-latest
-    environment: ci
     strategy:
       matrix:
         ruby: [ 2.4 ]
@@ -39,6 +38,12 @@ jobs:
           bundle exec rspec spec/fcmpush_spec.rb
         env:
           TEST_PROJECT_ID: ${{ secrets.TEST_PROJECT_ID }}
+          TEST_DEVICE_TOKEN: ${{ secrets.TEST_DEVICE_TOKEN }}
+          GOOGLE_ACCOUNT_TYPE: ${{ secrets.GOOGLE_ACCOUNT_TYPE }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_EMAIL: ${{ secrets.GOOGLE_CLIENT_EMAIL }}
+          GOOGLE_PRIVATE_KEY: ${{ secrets.GOOGLE_PRIVATE_KEY }}
+          FCM_SERVER_KEY: ${{ secrets.FCM_SERVER_KEY }}
 
       - name: slack notification
         uses: 8398a7/action-slack@v2
