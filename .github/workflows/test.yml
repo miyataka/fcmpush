@@ -5,6 +5,7 @@ on: push
 jobs:
   rspec:
     runs-on: ubuntu-latest
+    environment: CI
     strategy:
       matrix:
         ruby: [ 2.4, 2.5, 2.6, 2.7, "3.0" ]
