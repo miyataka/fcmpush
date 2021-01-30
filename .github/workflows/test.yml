@@ -1,0 +1,45 @@
+name: rspec
+
+on: push
+
+jobs:
+  rspec:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby: ["2.3", "2.4", "2.5", "2.6", "2.7", "3.0"]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+
+      - name: Configure Bundler
+        run: |
+          gem install -N bundler -v $(cat Gemfile.lock | tail -1 | tr -d " ")
+
+      - uses: actions/cache@v1
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gem-${{ hashFiles(format('{0}{1}', github.workspace, '/Gemfile.lock')) }}
+          restore-keys: ${{ runner.os }}-gem-
+
+      - name: Install ruby dependencies
+        run: |
+          bundle check || bundle install --jobs 4 --retry 3 --path vendor/bundle
+
+      - name: Rubocop
+        run: |
+          bundle exec rspec
+
+      - name: slack notification
+        uses: 8398a7/action-slack@v2
+        if: always()
+        with:
+          status: ${{ job.status }}
+          author_name: 'github action fcmpush build'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
