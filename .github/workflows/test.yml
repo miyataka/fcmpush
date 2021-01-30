@@ -18,6 +18,8 @@ jobs:
 
       - name: Configure Bundler
         run: |
+          gem update --system
+          gem --version
           gem install -N bundler -v 2
 
       - uses: actions/cache@v1
