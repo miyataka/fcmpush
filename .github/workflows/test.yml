@@ -32,7 +32,7 @@ jobs:
         run: |
           bundle check || bundle install --jobs 4 --retry 3 --path vendor/bundle
 
-      - name: Rubocop
+      - name: rspec
         run: |
           bundle exec rspec spec/fcmpush_spec.rb
         env:
