@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.required_ruby_version = '>= 2.3', '<= 3.0'
+  spec.required_ruby_version = '>= 2.4', '<= 3.0'
 
   spec.add_dependency 'googleauth', '>= 0.9.0'
   spec.add_dependency 'net-http-persistent', '~> 4.0.1'
