@@ -119,32 +119,31 @@ json[:results] # => [{}, {"error":"NOT_FOUND"}, ...]  ref. https://developers.go
 ```
 
 ## Performance
-- fcmpush's performance is good. (at least not so bad.)
+- fcmpush's performance is good. (about the same as fastest one!)
+- And fcmpush supports batch request feature! batch request not use in benchmarking. Because, it not supported by other gems.
 - [andpush](https://github.com/yuki24/andpush) is the fastest, but it uses legacy HTTP API.
 - fcmpush is fastest in gems using V1 HTTP API(fcmpush, [google-api-fcm](https://github.com/oniksfly/google-api-fcm), [firebase_cloud_messenger](https://github.com/vincedevendra/firebase_cloud_messenger)).
+- I excluded `google-api-fcm` gem because it can't run in ruby 3.
 - benchmark detail is [here](https://gist.github.com/miyataka/8787021724ee7dc5cecea88913f3af8c).
 ```
 Warming up --------------------------------------
              andpush     1.000  i/100ms
                  fcm     1.000  i/100ms
              fcmpush     1.000  i/100ms
-      google-api-fcm     1.000  i/100ms
 firebase_cloud_messenger
                          1.000  i/100ms
 Calculating -------------------------------------
-             andpush     13.161  (±15.2%) i/s -     63.000  in   5.010981s
-                 fcm      6.177  (±16.2%) i/s -     30.000  in   5.066638s
-             fcmpush      7.237  (±13.8%) i/s -     36.000  in   5.098668s
-      google-api-fcm      6.889  (±14.5%) i/s -     33.000  in   5.031508s
+             andpush     19.236  (±10.4%) i/s -     95.000  in   5.048723s
+                 fcm      6.536  (±15.3%) i/s -     33.000  in   5.083179s
+             fcmpush     18.871  (±10.6%) i/s -     93.000  in   5.031072s
 firebase_cloud_messenger
-                          2.766  (± 0.0%) i/s -     14.000  in   5.079574s
+                          3.238  (± 0.0%) i/s -     17.000  in   5.265755s
 
 Comparison:
-             andpush:       13.2 i/s
-             fcmpush:        7.2 i/s - 1.82x  slower
-      google-api-fcm:        6.9 i/s - 1.91x  slower
-                 fcm:        6.2 i/s - 2.13x  slower
-firebase_cloud_messenger:        2.8 i/s - 4.76x  slower
+             andpush:       19.2 i/s
+             fcmpush:       18.9 i/s - same-ish: difference falls within error
+                 fcm:        6.5 i/s - 2.94x  (± 0.00) slower
+firebase_cloud_messenger:        3.2 i/s - 5.94x  (± 0.00) slower
 ```
 
 ## Contributing
