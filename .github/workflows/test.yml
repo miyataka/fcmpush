@@ -19,7 +19,7 @@ jobs:
       - name: Configure Bundler
         run: |
           ruby -v
-          gem update --system
+          # gem update --system
           gem --version
           gem install -N bundler
 
