@@ -21,7 +21,7 @@ jobs:
           ruby -v
           gem update --system
           gem --version
-          gem install -N bundler -v 2
+          gem install -N bundler
 
       # - uses: actions/cache@v1
       #   with:
