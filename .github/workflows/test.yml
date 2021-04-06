@@ -31,7 +31,7 @@ jobs:
 
       - name: Install ruby dependencies
         run: |
-          bundle check || bundle install --jobs 4 --retry 3 --path vendor/bundle
+          bundle check || bundle config set --local path 'vendor/bundle' && bundle install --jobs 4 --retry 3
 
       - name: rspec
         run: |
