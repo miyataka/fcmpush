@@ -19,15 +19,15 @@ jobs:
       - name: Configure Bundler
         run: |
           ruby -v
-          # gem update --system
+          gem update --system
           gem --version
           gem install -N bundler
 
-      # - uses: actions/cache@v1
-      #   with:
-      #     path: vendor/bundle
-      #     key: ${{ runner.os }}-gem-${{ hashFiles(format('{0}{1}', github.workspace, '/Gemfile.lock')) }}
-      #     restore-keys: ${{ runner.os }}-gem-
+      - uses: actions/cache@v1
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gem-${{ hashFiles(format('{0}{1}', github.workspace, '/Gemfile.lock')) }}
+          restore-keys: ${{ runner.os }}-gem-
 
       - name: Install ruby dependencies
         run: |
