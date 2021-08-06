@@ -34,6 +34,7 @@ module Fcmpush
                        else
                          File.open(configuration.json_key_io)
                        end
+                  io.rewind if io.respond_to?(:read)
                   Google::Auth::ServiceAccountCredentials.make_creds(
                     json_key_io: io,
                     scope: configuration.scope
