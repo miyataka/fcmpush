@@ -7,9 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby: [ 2.4, 2.5, 2.6, 2.7, "3.0", 3.1 ]
+        ruby: [ 2.6, 2.7, "3.0", 3.1, 3.2 ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -23,7 +23,7 @@ jobs:
           gem --version
           gem install -N bundler
 
-      - uses: actions/cache@v1
+      - uses: actions/cache@v3
         with:
           path: vendor/bundle
           key: ${{ runner.os }}-gem-${{ hashFiles(format('{0}{1}', github.workspace, '/Gemfile.lock')) }}
@@ -46,11 +46,10 @@ jobs:
           FCM_SERVER_KEY: ${{ secrets.FCM_SERVER_KEY }}
 
       - name: slack notification
-        uses: 8398a7/action-slack@v2
+        uses: 8398a7/action-slack@v3
         if: always()
         with:
           status: ${{ job.status }}
           author_name: 'github action fcmpush build'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
