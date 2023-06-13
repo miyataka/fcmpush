@@ -38,7 +38,7 @@ Fcmpush.configure do |config|
   # ENV['GOOGLE_ACCOUNT_TYPE'] = 'service_account'
   # ENV['GOOGLE_CLIENT_ID'] = '000000000000000000000'
   # ENV['GOOGLE_CLIENT_EMAIL'] = 'xxxx@xxxx.iam.gserviceaccount.com'
-  # ENV['GOOGLE_PRIVATE_KEY'] = '-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n\'
+  # ENV['GOOGLE_PRIVATE_KEY'] = "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
 
   ## for topic subscribe/unsubscribe because they use regacy auth
   # firebase web console => project settings => cloud messaging => Project credentials => Server key
