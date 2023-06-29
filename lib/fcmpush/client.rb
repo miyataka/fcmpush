@@ -122,7 +122,7 @@ module Fcmpush
       def legacy_authorized_header(headers)
         headers.merge('Content-Type' => 'application/json',
                       'Accept' => 'application/json',
-                      'Authorization' => "Bearer key=#{server_key}")
+                      'Authorization' => "Bearer #{server_key}")
       end
 
       def exception_handler(response)
