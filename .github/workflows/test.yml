@@ -1,6 +1,8 @@
 name: rspec
 
-on: push
+on:
+  workflow_dispatch:
+  push:
 
 jobs:
   rspec:
