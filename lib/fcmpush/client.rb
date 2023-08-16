@@ -127,7 +127,7 @@ module Fcmpush
 
       def exception_handler(response)
         error = STATUS_TO_EXCEPTION_MAPPING[response.code]
-        raise error.new("Receieved an error response #{response.code} #{error.to_s.split('::').last}: #{response.body}", response) if error
+        raise error.new("Received an error response #{response.code} #{error.to_s.split('::').last}: #{response.body}", response) if error
 
         response
       end
