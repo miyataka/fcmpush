@@ -1,6 +1,6 @@
 module Fcmpush
   class Configuration
-    attr_accessor :scope, :json_key_io, :server_key
+    attr_accessor :scope, :json_key_io, :server_key, :proxy
 
     def initialize
       @scope = ['https://www.googleapis.com/auth/firebase.messaging']
