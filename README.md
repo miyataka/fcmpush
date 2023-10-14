@@ -45,6 +45,12 @@ Fcmpush.configure do |config|
   config.server_key = 'your firebase server key'
   # Or set environment variables
   # ENV['FCM_SERVER_KEY'] = 'your firebase server key'
+  
+  # Proxy ENV variables are considered by default if set by net/http, but you can explicitly define your proxy host here
+  # user and password are optional
+  # config.proxy = { uri: "http://proxy.host:3128", user: nil, password: nil }
+  # explicitly disable using proxy, even ignore environment variables if set
+  # config.proxy = false
 end
 ```
 
