@@ -26,7 +26,11 @@ module Fcmpush
       @server_key = configuration.server_key
       @connection = Net::HTTP::Persistent.new
 
-      if configuration.proxy && configuration.proxy[:uri]
+      if !configuration.proxy
+        # do nothing
+      elsif configuration.proxy == :ENV
+        @connection.proxy = :ENV
+      elsif configuration.proxy && configuration.proxy[:uri]
         uri = URI(configuration.proxy[:uri])
         # user name must not be a empty string, password can
         if configuration.proxy[:user] && configuration.proxy[:user].strip != ''
@@ -34,8 +38,6 @@ module Fcmpush
           uri.password = configuration.proxy[:password] if configuration.proxy[:password]
         end
         @connection.proxy = uri
-      elsif configuration.proxy != false
-        @connection.proxy = :ENV
       end
     end
 

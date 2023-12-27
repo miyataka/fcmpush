@@ -21,9 +21,9 @@ jobs:
       - name: Configure Bundler
         run: |
           ruby -v
-          gem update --system
+          # gem update --system
           gem --version
-          gem install -N bundler
+          gem install -N bundler -v 2.4
 
       - uses: actions/cache@v3
         with:
