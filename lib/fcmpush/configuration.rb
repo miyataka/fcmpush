@@ -16,6 +16,12 @@ module Fcmpush
 
       # regacy auth
       @server_key = ENV['FCM_SERVER_KEY']
+
+      # THIS IS EXPERIMENTAL
+      # NOT support `HTTPS_PROXY` environment variable. This feature not tested well on CI.
+      # cf. https://github.com/miyataka/fcmpush/pull/39#issuecomment-1722533622
+      # proxy
+      @proxy = :ENV
     end
   end
 end

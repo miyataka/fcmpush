@@ -25,6 +25,7 @@ module Fcmpush
       @access_token_expiry = Time.now.utc + access_token_response['expires_in']
       @server_key = configuration.server_key
       @connection = Net::HTTP::Persistent.new
+
       if configuration.proxy && configuration.proxy[:uri]
         uri = URI(configuration.proxy[:uri])
         # user name must not be a empty string, password can

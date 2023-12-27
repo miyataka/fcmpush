@@ -45,7 +45,7 @@ Fcmpush.configure do |config|
   config.server_key = 'your firebase server key'
   # Or set environment variables
   # ENV['FCM_SERVER_KEY'] = 'your firebase server key'
-  
+
   # Proxy ENV variables are considered by default if set by net/http, but you can explicitly define your proxy host here
   # user and password are optional
   # config.proxy = { uri: "http://proxy.host:3128", user: nil, password: nil }
@@ -151,6 +151,10 @@ Comparison:
                  fcm:        6.5 i/s - 2.94x  (± 0.00) slower
 firebase_cloud_messenger:        3.2 i/s - 5.94x  (± 0.00) slower
 ```
+
+## Experimental Features
+- proxy
+    - LIMITATION: support `http_proxy` only. NOT supports `HTTPS_PROXY`.
 
 ## Contributing
 
