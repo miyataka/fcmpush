@@ -15,7 +15,11 @@ module Fcmpush
       # ENV['GOOGLE_PRIVATE_KEY'] = '-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n'
 
       # regacy auth
+      # @deprecated TODO: remove this next version
       @server_key = ENV['FCM_SERVER_KEY']
+      if @server_key
+        warn '[DEPRECATION] `FCM_SERVER_KEY` environment variable, also @server_key is deprecated. This attribute will be removed next version.'
+      end
 
       # THIS IS EXPERIMENTAL
       # NOT support `HTTPS_PROXY` environment variable. This feature not tested well on CI.

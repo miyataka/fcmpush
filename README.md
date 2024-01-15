@@ -42,8 +42,10 @@ Fcmpush.configure do |config|
 
   ## for topic subscribe/unsubscribe because they use regacy auth
   # firebase web console => project settings => cloud messaging => Project credentials => Server key
+  # @deprecated: This attribute will be removed next version.
   config.server_key = 'your firebase server key'
   # Or set environment variables
+  # @deprecated: This attribute will be removed next version.
   # ENV['FCM_SERVER_KEY'] = 'your firebase server key'
 
   # Proxy ENV variables are considered by default if set by net/http, but you can explicitly define your proxy host here
