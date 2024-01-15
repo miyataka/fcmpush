@@ -112,7 +112,10 @@ module Fcmpush
         uri = URI.join(TOPIC_DOMAIN, TOPIC_ENDPOINT_PREFIX + suffix)
         uri.query = URI.encode_www_form(query) unless query.empty?
 
-        headers = legacy_authorized_header(headers)
+        headers = v1_authorized_header(headers)
+        # cf. https://takanamito.hateblo.jp/entry/2020/07/04/175045
+        # cf. https://github.com/miyataka/fcmpush/issues/40
+        headers['access_token_auth'] = 'true'
         post = Net::HTTP::Post.new(uri, headers)
         post.body = make_subscription_body(topic, *instance_ids)
 
