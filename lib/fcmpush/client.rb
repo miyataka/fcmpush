@@ -23,7 +23,7 @@ module Fcmpush
       access_token_response = v1_authorize
       @access_token = access_token_response['access_token']
       @access_token_expiry = Time.now.utc + access_token_response['expires_in']
-      @server_key = configuration.server_key
+      # @server_key = configuration.server_key
       @connection = Net::HTTP::Persistent.new
 
       if !configuration.proxy
@@ -136,7 +136,9 @@ module Fcmpush
                       'Authorization' => "Bearer #{access_token}")
       end
 
+      # @deprecated TODO: remove this method next version
       def legacy_authorized_header(headers)
+        warn "[DEPRECATION] `legacy_authorized_header` is deprecated.  Please use `v1_authorized_header` instead."
         headers.merge('Content-Type' => 'application/json',
                       'Accept' => 'application/json',
                       'Authorization' => "Bearer #{server_key}")
