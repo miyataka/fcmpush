@@ -26,6 +26,9 @@ module Fcmpush
       # @server_key = configuration.server_key
       @connection = Net::HTTP::Persistent.new
 
+      @connection.open_timeout = configuration.open_timeout if configuration.open_timeout
+      @connection.read_timeout = configuration.read_timeout if configuration.read_timeout
+
       if !configuration.proxy
         # do nothing
       elsif configuration.proxy == :ENV
