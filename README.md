@@ -53,6 +53,11 @@ Fcmpush.configure do |config|
   # config.proxy = { uri: "http://proxy.host:3128", user: nil, password: nil }
   # explicitly disable using proxy, even ignore environment variables if set
   # config.proxy = false
+
+  # HTTP connection open and read timeouts (in seconds) are set for all client requests.
+  # If unset, the default values for Net::HTTP::Persistent are used (currently 60 seconds).
+  # config.open_timeout = 30
+  # config.read_timeout = 15
 end
 ```
 
