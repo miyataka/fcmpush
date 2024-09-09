@@ -152,6 +152,8 @@ module Fcmpush
         raise error.new("Received an error response #{response.code} #{error.to_s.split('::').last}: #{response.body}", response) if error
 
         response
+      rescue Exception => e
+        response
       end
 
       def make_subscription_body(topic, *instance_ids)
