@@ -1,5 +1,6 @@
 module Fcmpush
   class APIError < StandardError; end
+  class DeprecatedApiError < StandardError; end
   class NetworkError < APIError; end
 
   class HttpError < APIError
