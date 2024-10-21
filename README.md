@@ -87,7 +87,7 @@ json = response.json
 json[:name] # => "projects/[your_project_id]/messages/0:1571037134532751%31bd1c9631bd1c96"
 ```
 
-### push messages in batch
+### push messages in batch [DEPRECATED]
 ```ruby
 require 'fcmpush'
 

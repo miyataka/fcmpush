@@ -87,12 +87,15 @@ module Fcmpush
       raise NetworkError, "A network error occurred: #{e.class} (#{e.message})"
     end
 
+    #-------------------------------------------------------------------------------
+    # BATCH REQUESTS DEPRECATED BY GOOGLE ON June 20,2023 AND SHUTDOWN ON June 21, 2024
+    # https://firebase.google.com/support/faq/#fcm-depr-features
+    # 
+    # Until upgrading to use HTTP/2, warning and throwing error
+    #-------------------------------------------------------------------------------
     def batch_push(messages, query: {}, headers: {})
-      uri, request = make_batch_request(messages, query, headers)
-      response = exception_handler(connection.request(uri, request))
-      BatchResponse.new(response)
-    rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
-      raise NetworkError, "A network error occurred: #{e.class} (#{e.message})"
+      warn '[DEPRECATION] `batch_push` is deprecated.  Please use `push` for each message instead.'
+      raise DeprecatedApiError, 'BATCH REQUESTS DEPRECATED BY GOOGLE ON June 20,2023 AND SHUTDOWN ON June 21, 2024 (https://firebase.google.com/support/faq/#fcm-depr-features)'
     end
 
     private
