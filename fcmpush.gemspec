@@ -22,12 +22,13 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.required_ruby_version = '>= 2.6', '< 3.5'
+  spec.required_ruby_version = '>= 2.6', '< 5'
 
   spec.add_dependency 'google-apis-identitytoolkit_v3'
+  spec.add_dependency 'mutex_m'
   spec.add_dependency 'net-http-persistent', '~> 4.0.1'
 
-  spec.add_development_dependency 'bundler', '~> 2.0'
+  spec.add_development_dependency 'bundler', '< 5'
   spec.add_development_dependency 'rake', '~> 13'
   spec.add_development_dependency 'rspec', '~> 3.0'
 end
