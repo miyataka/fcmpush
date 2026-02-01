@@ -1,0 +1,13 @@
+# Gradle
+.gradle/
+build/
+*/build/
+!gradle/wrapper/gradle-wrapper.jar
+local.properties
+.DS_Store
+.idea/
+*.iml
+captures/
+*.apk
+*.aab
+/app/google-services.json
