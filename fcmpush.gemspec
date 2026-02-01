@@ -27,6 +27,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'google-apis-identitytoolkit_v3'
   spec.add_dependency 'net-http-persistent', '~> 4.0.1'
 
+  spec.add_dependency 'logger'
+
   spec.add_development_dependency 'mutex_m'
   spec.add_development_dependency 'rake', '~> 13'
   spec.add_development_dependency 'rspec', '~> 3.0'
