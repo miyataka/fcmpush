@@ -23,16 +23,39 @@ Or install it yourself as:
 
 ## Usage
 
-on Rails, config/initializers/fcmpush.rb
+### Rails
+
+Download a service account key from Firebase Console, then store the complete JSON in
+[Rails encrypted credentials](https://guides.rubyonrails.org/security.html#custom-credentials):
+
+```sh
+bin/rails credentials:edit
+```
+
+Add the JSON as a YAML literal block:
+
+```yaml
+firebase_service_account_json: |
+  <paste the complete downloaded service account JSON here>
+```
+
+Keep `config/master.key` and `RAILS_MASTER_KEY` out of version control. Never commit the
+downloaded service account JSON to the repository.
+
+Configure Fcmpush in `config/initializers/fcmpush.rb`:
+
 ```ruby
+require "stringio"
+
 Fcmpush.configure do |config|
   ## for message push
   # firebase web console => project settings => service account => firebase admin sdk => generate new private key
 
-  # pass string of path to credential file to config.json_key_io
-  config.json_key_io = "#{Rails.root}/path/to/service_account_credentials.json"
-  # Or content of json key file wrapped with StringIO
-  # config.json_key_io = StringIO.new('{ ... }')
+  service_account_json = Rails.application.credentials.firebase_service_account_json!
+  config.json_key_io = StringIO.new(service_account_json)
+
+  # For non-Rails deployments, mount the credential file outside the source tree:
+  # config.json_key_io = ENV.fetch("GOOGLE_APPLICATION_CREDENTIALS")
 
   # Or set environment variables
   # ENV['GOOGLE_ACCOUNT_TYPE'] = 'service_account'
