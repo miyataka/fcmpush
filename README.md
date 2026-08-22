@@ -54,6 +54,11 @@ Fcmpush.configure do |config|
   service_account_json = Rails.application.credentials.firebase_service_account_json!
   config.json_key_io = StringIO.new(service_account_json)
 
+  # pass string of path to credential file to config.json_key_io
+  # config.json_key_io = "#{Rails.root}/path/to/service_account_credentials.json"
+  # Or content of json key file wrapped with StringIO
+  # config.json_key_io = StringIO.new('{ ... }')
+
   # For non-Rails deployments, mount the credential file outside the source tree:
   # config.json_key_io = ENV.fetch("GOOGLE_APPLICATION_CREDENTIALS")
 
