@@ -1,6 +1,5 @@
 require 'bundler/setup'
 require 'fcmpush'
-require 'active_support/test_case'
 # require 'pry-byebug'
 
 RSpec.configure do |config|
@@ -14,5 +13,4 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
-  config.include ActiveSupport::Testing::TimeHelpers
 end
