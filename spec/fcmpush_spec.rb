@@ -43,7 +43,8 @@ RSpec.describe Fcmpush do
         }
         prev_token = client.access_token
         sleep 1 # because google auth returns cached response
-        response = travel_to(Time.now.utc + 3600) { client.push(message_json) }
+        client.instance_variable_set(:@access_token_expiry, Time.now.utc - 1)
+        response = client.push(message_json)
         refreshed_token = client.access_token
 
         json = response.json
