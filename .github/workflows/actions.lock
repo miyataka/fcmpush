@@ -5,8 +5,7 @@ version: 'v0.0.3'
 workflows:
     '.github/workflows/test.yml':
         - '8398a7/action-slack@v3'
-        - 'actions/cache@v3'
-        - 'actions/checkout@v3'
+        - 'actions/checkout@v7.0.1'
         - 'ruby/setup-ruby@v1'
     '.github/workflows/verify-actions-lockfile.yml':
         - 'actions/checkout@v7.0.1'
@@ -16,16 +15,6 @@ dependencies:
         commit: 'sha1-77eaa4f1c608a7d68b38af4e3f739dcd8cba273e'
         owner_id: 8043276
         repo_id: 202563790
-    'actions/cache@v3':
-        ref: 'v3'
-        commit: 'sha1-6f8efc29b200d32929f49075959781ed54ec270c'
-        owner_id: 44036562
-        repo_id: 215566462
-    'actions/checkout@v3':
-        ref: 'v3'
-        commit: 'sha1-a37ce9120846195fa4ece8f58b268e6043cb2f26'
-        owner_id: 44036562
-        repo_id: 197814629
     'actions/checkout@v7.0.1':
         ref: 'v7.0.1'
         commit: 'sha1-3d3c42e5aac5ba805825da76410c181273ba90b1'

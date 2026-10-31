@@ -8,4 +8,4 @@ if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('3.4')
   gem 'drb'
 end
 
-gem 'pry-byebug'
+gem 'webmock', '~> 3.18'
