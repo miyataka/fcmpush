@@ -8,4 +8,8 @@ if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('3.4')
   gem 'drb'
 end
 
-gem 'pry-byebug'
+gem 'webmock', '~> 3.18'
+
+# multi_json releases supporting Ruby < 3.2 pass JSON.parse options positionally.
+# Keep the legacy Ruby test dependency stack on the compatible JSON API.
+gem 'json', '< 3' if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('3.2')
