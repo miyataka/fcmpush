@@ -14,5 +14,3 @@ RSpec.configure do |config|
   end
 
 end
-
-require_relative 'support/offline_http'
